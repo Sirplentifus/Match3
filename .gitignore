@@ -1,5 +1,5 @@
-.o
-.layout
-.depend
-.cbp
-/bin/debug/
+*.o
+*.layout
+*.depend
+*.cbp
+/bin/debug/*
