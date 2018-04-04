@@ -28,12 +28,17 @@ void Board::setPosSize(int nX, int nY, int nW, int nH){
     H = numRows*tileSize;
 
     //Redrawing the textures for the current size.
-    //Although tetures can be easily scaled, this feels more optimal, no waste in space nor lack of resolution
+    //Although textures can be easily scaled, this feels more optimal - no waste in space nor lack of resolution
     //Also, this function isn't called often
     SDL_DestroyTexture(piece_mold);
-    SDL_DestroyTexture(background);
+    piece_mold = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, tileSize, tileSize);
     SDL_SetRenderTarget(renderer, piece_mold);
+    aafilledCircleColor(renderer, tileSize/2, tileSize/2, pieceRadius, 0xffffffff);
+
+    SDL_DestroyTexture(background);
     SDL_SetRenderTarget(renderer, background);
+
+    //Making the target back to the window
     SDL_SetRenderTarget(renderer, NULL);
 }
 
