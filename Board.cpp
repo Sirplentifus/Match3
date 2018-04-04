@@ -76,13 +76,7 @@ void Board::OnRender(){
             int piece_ind = i*numRows+j;
             piece_t piece = actualBoard[piece_ind];
             if(piece != EMPTY && piece_ind!=selectedPieceInd && piece_ind!=ontoPieceInd){
-                //aafilledCircleColor(renderer, x+tileSize*i+tileSize/2, y+tileSize*j+tileSize/2, pieceRadius, pieceColors[piece]);
-                //Put this in its own function
-                Uint32 Color = pieceColors[piece];
-                Uint8 r=Color&0xff, g=(Color&0xff00)>>8, b=(Color&0xff0000)>>16;
-                SDL_SetTextureColorMod( piece_mold, r, g, b);
-                SDL_Rect renderQuad = { x+tileSize*i, y+tileSize*j, tileSize, tileSize };
-                SDL_RenderCopy(renderer, piece_mold, NULL, &renderQuad);
+                RenderPiece(piece, x+tileSize*i, y+tileSize*j);
             }
         }
     }
@@ -97,6 +91,14 @@ void Board::OnRender(){
         SDL_GetMouseState(&mX, &mY);
         aafilledCircleColor(renderer, mX, mY, pieceRadius, pieceColors[actualBoard[selectedPieceInd]]);
     }
+}
+
+void Board::RenderPiece(piece_t piece, int xp, int yp){
+    Uint32 Color = pieceColors[piece];
+    Uint8 r=Color&0xff, g=(Color&0xff00)>>8, b=(Color&0xff0000)>>16;
+    SDL_SetTextureColorMod( piece_mold, r, g, b);
+    SDL_Rect renderQuad = { xp, yp, tileSize, tileSize };
+    SDL_RenderCopy(renderer, piece_mold, NULL, &renderQuad);
 }
 
 void Board::OnLoop(){

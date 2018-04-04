@@ -50,6 +50,7 @@ class Board
         SDL_Renderer* renderer;
         Uint32 start_time;
         Uint32 pieceColors[N_PIECES] = {0xff4141f4, 0xff41f446, 0xfff48642, 0xff41eef4, 0xfff441c4};
+        void RenderPiece(piece_t piece, int xp, int yp);
 
         //The thing in itself
         piece_t *actualBoard;
