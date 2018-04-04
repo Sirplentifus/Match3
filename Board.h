@@ -42,6 +42,9 @@ class Board
         int tileSize, tileMargin, pieceRadius; //Board object dimensions
         float tileMarginFraction=0.075, tilePieceFraction=0.65;
 
+        //GPU Textures
+        SDL_Texture *background, *piece_mold;
+
         //Non mutable
         int numColumns, numRows;
         SDL_Renderer* renderer;

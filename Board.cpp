@@ -7,6 +7,8 @@ Board::Board()
     numColumns = -1;
     numRows = -1;
     selectedPieceInd = -1, ontoPieceInd=-1;
+    background=NULL;
+    piece_mold=NULL;
 }
 
 Board::~Board()
