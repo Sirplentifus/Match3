@@ -1,6 +1,9 @@
 #include "App.h"
 
 bool App::OnInit(){
+
+    prev_frame_time = SDL_GetTicks();
+
 	//Initialize SDL
 	if( SDL_Init( SDL_INIT_VIDEO ) < 0 )
 	{

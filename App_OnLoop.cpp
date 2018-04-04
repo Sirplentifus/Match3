@@ -4,6 +4,7 @@ void App::OnLoop(){
 
     Uint32 cur_frame_time = SDL_GetTicks();
     int SleepTime = 30 - (cur_frame_time-prev_frame_time);
+
     if(SleepTime > 0)
         SDL_Delay( SleepTime );
 
@@ -15,4 +16,5 @@ void App::OnLoop(){
     rgb_back_color = hsv2rgb(hsv_back_color);
 
     board.OnLoop();
+    prev_frame_time = cur_frame_time;
 }
