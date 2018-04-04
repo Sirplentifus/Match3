@@ -26,6 +26,15 @@ void Board::setPosSize(int nX, int nY, int nW, int nH){
     y = nY + (H - tileSize*numRows)/2;
     W = numColumns*tileSize;
     H = numRows*tileSize;
+
+    //Redrawing the textures for the current size.
+    //Although tetures can be easily scaled, this feels more optimal, no waste in space nor lack of resolution
+    //Also, this function isn't called often
+    SDL_DestroyTexture(piece_mold);
+    SDL_DestroyTexture(background);
+    SDL_SetRenderTarget(renderer, piece_mold);
+    SDL_SetRenderTarget(renderer, background);
+    SDL_SetRenderTarget(renderer, NULL);
 }
 
 void Board::OnInit(SDL_Renderer* nRenderer, int nNumColumns, int nNumRows){
