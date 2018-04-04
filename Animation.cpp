@@ -66,8 +66,7 @@ void Board::RenderDrop(Animation& anim){
             throw std::invalid_argument("Piece dropping mechanism attempted to overwrite a piece\n");
         actualBoard[i*numRows+anim.dropAnim.target_j] = anim.dropAnim.piece_type; //Is this really a task for the renderer?
     }
-    Uint32 color = pieceColors[anim.dropAnim.piece_type];
-    aafilledCircleColor(renderer, (Sint16)(x+tileSize*i+tileSize/2), (Sint16)(y+tileSize*j+tileSize/2), pieceRadius, color);
+    RenderPiece(anim.dropAnim.piece_type, x+tileSize*i, y+tileSize*j);
 }
 
 void Board::ProcessMatches(){
