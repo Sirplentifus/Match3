@@ -18,9 +18,9 @@ Board::~Board()
 
 void Board::setPosSize(int nX, int nY, int nW, int nH){
     W = nW; H = nH;
-    tileSize = std::min(nW/numColumns, nH/numRows); printf("Tile size: %d\n", tileSize);
-    tileMargin = (int)((float)tileSize*tileMarginFraction); printf("Tile margin: %d\n", tileMargin);
-    pieceRadius = (int)((float)tileSize*tilePieceFraction/2.0); printf("Piece Radius: %d\n", pieceRadius);
+    tileSize = std::min(nW/numColumns, nH/numRows); SDL_Log("Tile size: %d\n", tileSize);
+    tileMargin = (int)((float)tileSize*tileMarginFraction); SDL_Log("Tile margin: %d\n", tileMargin);
+    pieceRadius = (int)((float)tileSize*tilePieceFraction/2.0); SDL_Log("Piece Radius: %d\n", pieceRadius);
 
     x = nX + (W - tileSize*numColumns)/2;
     y = nY + (H - tileSize*numRows)/2;
@@ -110,7 +110,7 @@ void Board::OnLoop(){
         if(animations.empty())
             ProcessDrops();
     }
-    //printf("Size of animation list: %d\n", animations.size());
+    //SDL_Log("Size of animation list: %d\n", animations.size());
 }
 
 //TODO: If a selected piece becomes part of a match, it needs to be unselected!

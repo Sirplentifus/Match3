@@ -16,7 +16,7 @@ void App::OnKeyDown (SDL_Keycode sym, Uint16 mod, SDL_Scancode scancode){
 
 void App::OnResize(int w,int h){
 
-    printf("Resize to %d %d\n", w, h);
+    SDL_Log("Resize to %d %d\n", w, h);
 
     screen_width = w;
     screen_height = h;

@@ -40,7 +40,7 @@ int App::OnExecute()
 }
 
 void print_SDL_version(char* preamble, SDL_version* v) {
-   printf("%s %u.%u.%u\n", preamble, v->major, v->minor, v->patch);
+   SDL_Log("%s %u.%u.%u\n", preamble, v->major, v->minor, v->patch);
 }
 
 void print_SDL_versions() {
