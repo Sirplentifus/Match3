@@ -1,6 +1,9 @@
 #include "App.h"
 
 bool App::OnInit(){
+
+    prev_frame_time = SDL_GetTicks();
+
 	//Initialize SDL
 	if( SDL_Init( SDL_INIT_VIDEO ) < 0 )
 	{
@@ -31,6 +34,9 @@ bool App::OnInit(){
 
     board.OnInit(renderer, 8, 12);
     board.setPosSize(screen_margin, screen_margin, screen_width-2*screen_margin, screen_height-2*screen_margin);
+
+    SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "2");
+    printf("SDL_HINT_RENDER_SCALE_QUALITY: %s\n", SDL_GetHint(SDL_HINT_RENDER_SCALE_QUALITY));
 
     return true;
 }

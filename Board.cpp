@@ -7,6 +7,8 @@ Board::Board()
     numColumns = -1;
     numRows = -1;
     selectedPieceInd = -1, ontoPieceInd=-1;
+    background=NULL;
+    piece_mold=NULL;
 }
 
 Board::~Board()
@@ -24,6 +26,26 @@ void Board::setPosSize(int nX, int nY, int nW, int nH){
     y = nY + (H - tileSize*numRows)/2;
     W = numColumns*tileSize;
     H = numRows*tileSize;
+
+    //Redrawing the textures for the current size.
+    //Although textures can be easily scaled, this feels more optimal - no waste in space nor lack of resolution
+    //Also, this function isn't called often
+
+    SDL_DestroyTexture(piece_mold);
+    piece_mold = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, tileSize, tileSize);
+    SDL_SetTextureBlendMode( piece_mold, SDL_BLENDMODE_BLEND );
+    SDL_SetRenderTarget(renderer, piece_mold);
+    SDL_SetRenderDrawColor(renderer, 0x33, 0x80, 0xA0, 0x00);
+    SDL_RenderClear(renderer);
+    aafilledCircleColor(renderer, tileSize/2, tileSize/2, pieceRadius, 0xffffffff);
+
+    SDL_DestroyTexture(background);
+    SDL_SetRenderTarget(renderer, background);
+
+    //Making the target back to the window
+    SDL_SetRenderTarget(renderer, NULL);
+
+
 }
 
 void Board::OnInit(SDL_Renderer* nRenderer, int nNumColumns, int nNumRows){
@@ -54,7 +76,7 @@ void Board::OnRender(){
             int piece_ind = i*numRows+j;
             piece_t piece = actualBoard[piece_ind];
             if(piece != EMPTY && piece_ind!=selectedPieceInd && piece_ind!=ontoPieceInd){
-                aafilledCircleColor(renderer, x+tileSize*i+tileSize/2, y+tileSize*j+tileSize/2, pieceRadius, pieceColors[piece]);
+                RenderPiece(piece, x+tileSize*i, y+tileSize*j);
             }
         }
     }
@@ -69,6 +91,14 @@ void Board::OnRender(){
         SDL_GetMouseState(&mX, &mY);
         aafilledCircleColor(renderer, mX, mY, pieceRadius, pieceColors[actualBoard[selectedPieceInd]]);
     }
+}
+
+void Board::RenderPiece(piece_t piece, int xp, int yp){
+    Uint32 Color = pieceColors[piece];
+    Uint8 r=Color&0xff, g=(Color&0xff00)>>8, b=(Color&0xff0000)>>16;
+    SDL_SetTextureColorMod( piece_mold, r, g, b);
+    SDL_Rect renderQuad = { xp, yp, tileSize, tileSize };
+    SDL_RenderCopy(renderer, piece_mold, NULL, &renderQuad);
 }
 
 void Board::OnLoop(){
