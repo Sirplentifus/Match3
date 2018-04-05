@@ -19,6 +19,8 @@ bool App::OnInit(){
 
 #ifdef __ANDROID__
     SDL_Log("I am an android program\n");
+    screen_width = displayMode.w;
+    screen_height = displayMode.h;
 #endif
 #ifdef __GNUC__
     SDL_Log("I am a computer program\n");
