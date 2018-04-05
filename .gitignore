@@ -3,3 +3,5 @@
 *.depend
 *.cbp
 /bin/debug/*
+.dll
+.exe
