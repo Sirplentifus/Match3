@@ -11,6 +11,20 @@ bool App::OnInit(){
 		return false;
 	}
 
+	//test
+	 SDL_DisplayMode displayMode;
+	 if( SDL_GetCurrentDisplayMode( 0, &displayMode ) == 0 ){
+        SDL_Log("Screen size: %d, %d", displayMode.w, displayMode.h);
+	 }
+
+#ifdef __ANDROID__
+    SDL_Log("I am an android program\n");
+#endif
+#ifdef __GNUC__
+    SDL_Log("I am a computer program\n");
+#endif // __GNUC__
+
+
     //Create window
     window = SDL_CreateWindow( "Match 3", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, screen_width, screen_height, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE  );
     if( window == NULL )
