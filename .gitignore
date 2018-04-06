@@ -5,3 +5,5 @@
 /bin/debug/*
 *.dll
 *.exe
+doxygen/*
+Android.mk
