@@ -24,6 +24,8 @@ bool App::OnInit(){
 #endif
 #ifdef __GNUC__
     SDL_Log("I am a computer program\n");
+    screen_width = 480;
+    screen_height = 640;
 #endif // __GNUC__
 
 

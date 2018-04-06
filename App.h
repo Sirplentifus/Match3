@@ -17,8 +17,8 @@ class App : public CEvent {
 
         Uint32 prev_frame_time; //ms
 
-        int screen_width = 480;
-        int screen_height = 640;
+        int screen_width;
+        int screen_height;
         int screen_margin = 30;
 
         bool Running;
