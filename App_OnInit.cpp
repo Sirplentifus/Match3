@@ -14,8 +14,10 @@ bool App::OnInit(){
 	//test
 	 SDL_DisplayMode displayMode;
 	 if( SDL_GetCurrentDisplayMode( 0, &displayMode ) == 0 ){
-        SDL_Log("Screen size: %d, %d", displayMode.w, displayMode.h);
-	 }
+         SDL_Log("Screen size: %d, %d", displayMode.w, displayMode.h);
+	 } else {
+         SDL_Log("Could not get current display mode! SDL_Error: %s\n", SDL_GetError());
+     }
 
 #ifdef __ANDROID__
     SDL_Log("I am an android program\n");
@@ -44,13 +46,6 @@ bool App::OnInit(){
             SDL_Log( "SDL_image could not initialize! SDL_image Error: %s\n", IMG_GetError() );
             return false;
     }*/
-
-    //Get window surface
-    screenSurface = SDL_GetWindowSurface( window );
-    if(screenSurface==NULL){
-        SDL_Log( "screenSurface could not be created! SDL_Error: %s\n", SDL_GetError() );
-        return false;
-    }
 
     renderer = SDL_CreateRenderer( window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC );
     if(renderer==NULL){
