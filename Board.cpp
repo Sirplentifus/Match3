@@ -9,6 +9,14 @@ Board::Board()
     selectedPieceInd = -1, ontoPieceInd=-1;
     background=NULL;
     piece_mold=NULL;
+
+    tileMarginFraction=0.075;
+    tilePieceFraction=0.65;
+    pieceColors[RED] = 0xff4141f4;
+    pieceColors[GREEN] = 0xff41f446;
+    pieceColors[BLUE] = 0xfff48642;
+    pieceColors[YELLOW] = 0xff41eef4;
+    pieceColors[PURPLE] = 0xfff441c4;
 }
 
 Board::~Board()

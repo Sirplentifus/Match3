@@ -5,12 +5,12 @@
 #include <stdlib.h>
 #include <algorithm>
 #include <list>
-#include <stdexcept>
 #include <utility>
 
 #include "LTexture.h"
 #include "primitives\SDL2_gfxPrimitives.h"
 
+#include "Piece.h"
 #include "Animation.h"
 
 using std::list;
@@ -40,7 +40,7 @@ class Board
         int W, H; //Window Size
 
         int tileSize, tileMargin, pieceRadius; //Board object dimensions
-        float tileMarginFraction=0.075, tilePieceFraction=0.65;
+        float tileMarginFraction, tilePieceFraction;
 
         //GPU Textures
         SDL_Texture *background, *piece_mold;
@@ -49,7 +49,7 @@ class Board
         int numColumns, numRows;
         SDL_Renderer* renderer;
         Uint32 start_time;
-        Uint32 pieceColors[N_PIECES] = {0xff4141f4, 0xff41f446, 0xfff48642, 0xff41eef4, 0xfff441c4};
+        Uint32 pieceColors[N_PIECES];
         void RenderPiece(piece_t piece, int xp, int yp);
 
         //The thing in itself
@@ -64,8 +64,8 @@ class Board
 
         //Loop helpers
         void ProcessMatches();
-        list<pair<int,int>> RegionGrowth(pair<int,int> seed);
-        Animation CreateMatchAnim(list<pair<int,int>>& members, Uint32 color);
+        list< pair<int,int> > RegionGrowth(pair<int,int> seed);
+        Animation CreateMatchAnim(list< pair<int,int> >& members, Uint32 color);
         void ProcessDrops();
 
         //Piece moving faciliators
