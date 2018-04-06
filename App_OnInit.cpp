@@ -47,14 +47,22 @@ bool App::OnInit(){
 
     //Get window surface
     screenSurface = SDL_GetWindowSurface( window );
+    if(screenSurface==NULL){
+        SDL_Log( "screenSurface could not be created! SDL_Error: %s\n", SDL_GetError() );
+        return false;
+    }
 
     renderer = SDL_CreateRenderer( window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC );
+    if(renderer==NULL){
+        SDL_Log( "Renderer could not be created! SDL_Error: %s\n", SDL_GetError() );
+        return false;
+    }
+
+    //SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1");
+    //SDL_Log("SDL_HINT_RENDER_SCALE_QUALITY: %s\n", SDL_GetHint(SDL_HINT_RENDER_SCALE_QUALITY));
 
     board.OnInit(renderer, 8, 12);
     board.setPosSize(screen_margin, screen_margin, screen_width-2*screen_margin, screen_height-2*screen_margin);
-
-    SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "2");
-    SDL_Log("SDL_HINT_RENDER_SCALE_QUALITY: %s\n", SDL_GetHint(SDL_HINT_RENDER_SCALE_QUALITY));
 
     return true;
 }
