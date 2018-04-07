@@ -51,7 +51,6 @@ class App : public CEvent {
         void OnResize(int w,int h);
         void OnLButtonDown(int mX, int mY);
         void OnLButtonUp(int mX, int mY);
-        void OnMouseMove(int mX, int mY, int relX, int relY, bool Left,bool Right,bool Middle);
 
         void OnExit ();
 

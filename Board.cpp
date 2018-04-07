@@ -122,7 +122,6 @@ void Board::OnLoop(){
     //SDL_Log("Size of animation list: %d\n", animations.size());
 }
 
-//TODO: If a selected piece becomes part of a match, it needs to be unselected!
 void Board::OnLButtonDown(int mX, int mY){
     if(mX<x || mX>x+W || mY<y || mY>y+H)
         return;
@@ -145,9 +144,6 @@ void Board::OnLButtonUp(int mX, int mY){
 
     if( (diff==1||diff==-1||diff==numRows||diff==-numRows) && actualBoard[ontoCandidateInd]!=EMPTY
        && actualBoard[ontoCandidateInd]!=actualBoard[selectedPieceInd]){
-
-        //selected becomes part of a match?
-        //if( actualBoard[selectedPieceInd]== )
 
         std::swap(actualBoard[selectedPieceInd], actualBoard[ontoCandidateInd]);
 
@@ -208,9 +204,4 @@ bool Board::match_on_point(int i, int j){
         return true;
 
     return false;
-}
-
-//Not actually necessary?
-void Board::OnMouseMove(int mX, int mY, int relX, int relY, bool Left,bool Right,bool Middle){
-
 }
