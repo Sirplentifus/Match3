@@ -27,7 +27,6 @@ void Board::RenderAnimation(Animation& anim){
 }
 
 void Board::RenderMatch(Animation& anim){
-    bool fade=false, shrink=true;
     MatchAnim matchAnim = anim.matchAnim;
 
     Uint32 delta_t = SDL_GetTicks()-anim.start_time;
@@ -40,18 +39,10 @@ void Board::RenderMatch(Animation& anim){
         delete anim.matchAnim.is; delete anim.matchAnim.js;
         return;
     }
-    Uint32 alpha = 0xff000000;
-    Sint16 radius = pieceRadius;
-    Uint32 Color = matchAnim.color;
-    if(fade)
-        alpha = (Uint32)((float)0xff*(1.0-anim_fraction))<<(8*3);
-    if(shrink)
-        radius = (Sint16)((float)pieceRadius*(1.0-anim_fraction));
 
     for(int k=0; k<matchAnim.numPieces; k++){
         int i = matchAnim.is[k], j = matchAnim.js[k];
-        Color = (0xff000000&alpha)|(0x00ffffff&Color);
-        aafilledCircleColor(renderer, x+tileSize*i+tileSize/2, y+tileSize*j+tileSize/2, radius, Color);
+        RenderPiece(matchAnim.piece_type, x+tileSize*i, y+tileSize*j, 1.0-anim_fraction);
     }
 }
 
@@ -80,9 +71,9 @@ void Board::ProcessMatches(){
             if(actualBoard[i*numRows+j]!=EMPTY &&
                actualBoard[i*numRows+j]==actualBoard[i*numRows+j+1] &&
                actualBoard[i*numRows+j]==actualBoard[i*numRows+j+2]){
-                Uint32 Color = pieceColors[actualBoard[i*numRows+j]];
+                piece_t piece_type = actualBoard[i*numRows+j];
                 auto Region = RegionGrowth(make_pair(i,j+1));
-                animations.push_back(CreateMatchAnim(Region, Color));
+                animations.push_back(CreateMatchAnim(Region, piece_type));
             }
         }
     }
@@ -92,9 +83,9 @@ void Board::ProcessMatches(){
             if(actualBoard[i*numRows+j]!=EMPTY &&
                actualBoard[i*numRows+j]==actualBoard[(i+1)*numRows+j] &&
                actualBoard[i*numRows+j]==actualBoard[(i+2)*numRows+j]){
-                Uint32 Color = pieceColors[actualBoard[i*numRows+j]];
+                piece_t piece_type = actualBoard[i*numRows+j];
                 auto Region = RegionGrowth(make_pair(i+1,j));
-                animations.push_back(CreateMatchAnim(Region, Color));
+                animations.push_back(CreateMatchAnim(Region, piece_type));
             }
         }
     }
@@ -145,10 +136,10 @@ list< pair<int,int> > Board::RegionGrowth(pair<int,int> seed){
     return explored;
 }
 
-Animation Board::CreateMatchAnim(list< pair<int,int> >& members, Uint32 color){
+Animation Board::CreateMatchAnim(list< pair<int,int> >& members, piece_t piece_type){
     Animation newMatchAnim;
     newMatchAnim.matchAnim.numPieces=members.size();
-    newMatchAnim.matchAnim.color=color;
+    newMatchAnim.matchAnim.piece_type=piece_type;
     newMatchAnim.anim_type=Animation::MATCH;
 
     newMatchAnim.matchAnim.is = new int[newMatchAnim.matchAnim.numPieces];

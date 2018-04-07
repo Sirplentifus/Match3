@@ -25,7 +25,6 @@ class Board
 
         void OnInit(SDL_Renderer* nRenderer, int nNumColumns=-1, int nNumRows=-1);
         void OnRender();
-        //void RenderAnimation(Animation anim);
         void OnLoop();
         void OnLButtonDown(int mX, int mY);
         void OnLButtonUp(int mX, int mY);
@@ -48,7 +47,6 @@ class Board
         SDL_Renderer* renderer;
         Uint32 start_time;
         Uint32 pieceColors[N_PIECES];
-        void RenderPiece(piece_t piece, int xp, int yp);
 
         //The thing in itself
         piece_t *actualBoard;
@@ -59,11 +57,13 @@ class Board
         void RenderAnimation(Animation& anim);
         void RenderMatch(Animation& anim);
         void RenderDrop(Animation& anim);
+        void RenderPiece(piece_t piece, int xp, int yp);
+        void RenderPiece(piece_t piece, int xp, int yp, float scale);
 
         //Loop helpers
         void ProcessMatches();
         list< pair<int,int> > RegionGrowth(pair<int,int> seed);
-        Animation CreateMatchAnim(list< pair<int,int> >& members, Uint32 color);
+        Animation CreateMatchAnim(list< pair<int,int> >& members, piece_t piece_type);
         void ProcessDrops();
 
         //Piece moving faciliators

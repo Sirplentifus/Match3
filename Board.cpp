@@ -110,6 +110,15 @@ void Board::RenderPiece(piece_t piece, int xp, int yp){
     SDL_RenderCopy(renderer, piece_mold, NULL, &renderQuad);
 }
 
+void Board::RenderPiece(piece_t piece, int xp, int yp, float scale){
+    Uint32 Color = pieceColors[piece];
+    Uint8 r=Color&0xff, g=(Color&0xff00)>>8, b=(Color&0xff0000)>>16;
+    SDL_SetTextureColorMod( piece_mold, r, g, b);
+    int offset = tileSize*(1.0-scale)/2.0;
+    SDL_Rect renderQuad = { xp+offset, yp+offset, tileSize*scale, tileSize*scale };
+    SDL_RenderCopy(renderer, piece_mold, NULL, &renderQuad);
+}
+
 void Board::OnLoop(){
 
     if(SDL_GetTicks()-start_time > 1000){

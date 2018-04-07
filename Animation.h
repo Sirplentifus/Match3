@@ -20,7 +20,7 @@ struct MatchAnim{
 
         int numPieces;
         int *is, *js;
-        Uint32 color; //TODO: replace with piece_t for uniformity?
+        piece_t piece_type;
 };
 
 struct SwitchAnim{
