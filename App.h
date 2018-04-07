@@ -3,7 +3,6 @@
 
 #include <SDL.h>
 //#include <SDL_image.h> //Not using images for now
-#include <stdio.h>
 
 #include "CEvent.h"
 //#include "LTexture.h" //Not using images for now
