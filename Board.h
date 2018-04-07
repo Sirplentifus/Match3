@@ -71,7 +71,10 @@ class Board
         //move slightly towards the selected piece. But this is complicated and sublte, so was not implemented
         //TODO: remove ontoPieceInd everywhere.
         int selectedPieceInd, ontoPieceInd;
+        bool try_swap(int piece_1, int piece_2);
         bool match_on_point(int i, int j);
+        bool in_bounds(int i, int j);
+        bool in_bounds(int ind);
 };
 
 #endif // BOARD_H

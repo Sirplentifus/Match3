@@ -120,6 +120,18 @@ void Board::OnLoop(){
             ProcessDrops();
     }
     //SDL_Log("Size of animation list: %d\n", animations.size());
+
+    //The user doesn't need to release the piece over another piece. Passing over it will be enough
+    if(selectedPieceInd!=-1){
+        int i,j;
+        int mX, mY;
+        SDL_GetMouseState(&mX, &mY);
+        i = (mX-x)/tileSize;
+        j = (mY-y)/tileSize;
+        if(try_swap(selectedPieceInd, i*numRows+j)){
+            selectedPieceInd = -1;
+        }
+    }
 }
 
 void Board::OnLButtonDown(int mX, int mY){
@@ -128,9 +140,9 @@ void Board::OnLButtonDown(int mX, int mY){
     int i,j;
     i = (mX-x)/tileSize;
     j = (mY-y)/tileSize;
-    if(actualBoard[i*numRows+j] == EMPTY)
+    if(!in_bounds(i,j) || actualBoard[i*numRows+j] == EMPTY)
         return;
-    //actualBoard[i*numRows+j] = (piece_t)(((int)actualBoard[i*numRows+j]+1)%N_PIECES);
+
     selectedPieceInd = i*numRows+j;
 }
 
@@ -140,26 +152,36 @@ void Board::OnLButtonUp(int mX, int mY){
     i = (mX-x)/tileSize;
     j = (mY-y)/tileSize;
     int ontoCandidateInd = i*numRows+j;
-    int diff = selectedPieceInd-ontoCandidateInd;
 
-    if( (diff==1||diff==-1||diff==numRows||diff==-numRows) && actualBoard[ontoCandidateInd]!=EMPTY
-       && actualBoard[ontoCandidateInd]!=actualBoard[selectedPieceInd]){
-
-        std::swap(actualBoard[selectedPieceInd], actualBoard[ontoCandidateInd]);
-
-        //verify a match gets created
-        if(!match_on_point(selectedPieceInd/numRows, selectedPieceInd%numRows) &&
-           !match_on_point(ontoCandidateInd/numRows, ontoCandidateInd%numRows)){
-            //swap back
-            std::swap(actualBoard[selectedPieceInd], actualBoard[ontoCandidateInd]);
-        }
-
-    }
+    try_swap(selectedPieceInd, ontoCandidateInd);
 
     selectedPieceInd = -1, ontoPieceInd=-1;
 }
 
+bool Board::try_swap(int piece_1, int piece_2){
+    if(!in_bounds(piece_1), !in_bounds(piece_2))
+        return false;
+    int diff = abs(piece_2-piece_1);
+
+    if( (diff==1||diff==numRows) && actualBoard[piece_2]!=EMPTY
+       && actualBoard[piece_2]!=actualBoard[piece_1]){
+
+        std::swap(actualBoard[piece_1], actualBoard[piece_2]);
+
+        //verify a match gets created
+        if(!match_on_point(piece_1/numRows, piece_1%numRows) &&
+           !match_on_point(piece_2/numRows, piece_2%numRows)){
+            //swap back
+            std::swap(actualBoard[piece_1], actualBoard[piece_2]);
+            return false;
+        }
+        return true;
+    }
+    return false;
+}
+
 bool Board::match_on_point(int i, int j){
+
     int count=0;
 
     //horizontal
@@ -204,4 +226,13 @@ bool Board::match_on_point(int i, int j){
         return true;
 
     return false;
+}
+
+
+bool Board::in_bounds(int i, int j){
+    return i>=0 && i<numColumns && j>=0 && j<numRows;
+}
+
+bool Board::in_bounds(int ind){
+    return ind>=0 && ind<numColumns*numRows;
 }
