@@ -1,4 +1,5 @@
 #include "Animation.h"
+
 #include "Board.h"
 
 Animation::Animation()
@@ -21,9 +22,7 @@ void Board::RenderAnimation(Animation& anim){
             RenderDrop(anim);
             break;
         default:
-            char message[256];
-            sprintf(message, "invalid animation type: %d", anim.anim_type);
-            throw std::invalid_argument( message );
+            SDL_LogError(SDL_LOG_CATEGORY_ERROR, "invalid animation type: %d", anim.anim_type);
     }
 }
 
@@ -56,6 +55,7 @@ void Board::RenderMatch(Animation& anim){
     }
 }
 
+const float DropAnim::drop_speed = 5.0f/1000.0f; //tiles per millisecond
 void Board::RenderDrop(Animation& anim){
     int i = anim.dropAnim.i;
     float j = anim.dropAnim.start_j + anim.dropAnim.drop_speed*(SDL_GetTicks()-anim.start_time);
@@ -63,7 +63,7 @@ void Board::RenderDrop(Animation& anim){
         j=anim.dropAnim.target_j;
         anim.finished=true;
         if(actualBoard[i*numRows+anim.dropAnim.target_j]!=EMPTY)
-            throw std::invalid_argument("Piece dropping mechanism attempted to overwrite a piece\n");
+            SDL_LogError(SDL_LOG_CATEGORY_ERROR, "Piece dropping mechanism attempted to overwrite a piece\n");
         actualBoard[i*numRows+anim.dropAnim.target_j] = anim.dropAnim.piece_type; //Is this really a task for the renderer?
     }
     RenderPiece(anim.dropAnim.piece_type, x+tileSize*i, y+tileSize*j);
@@ -100,11 +100,11 @@ void Board::ProcessMatches(){
     }
 }
 
-list<pair<int,int>> Board::RegionGrowth(pair<int,int> seed){
+list< pair<int,int> > Board::RegionGrowth(pair<int,int> seed){
     piece_t match_piece = actualBoard[seed.first*numRows + seed.second];
     if(match_piece==EMPTY)
-        throw(std::invalid_argument("RegionGrowth can't run on an empty seed"));
-    list<pair<int,int>> explored, new_frontier, frontier;
+        SDL_LogError(SDL_LOG_CATEGORY_ERROR, "RegionGrowth can't run on an empty seed");
+    list< pair<int,int> > explored, new_frontier, frontier;
     frontier.push_back(seed);
     pair<int,int> nb[] = {make_pair(1,0), make_pair(-1,0), make_pair(0,1), make_pair(0,-1)}; //neighbourhood
     bool doItAgain;
@@ -145,7 +145,7 @@ list<pair<int,int>> Board::RegionGrowth(pair<int,int> seed){
     return explored;
 }
 
-Animation Board::CreateMatchAnim(list<pair<int,int>>& members, Uint32 color){
+Animation Board::CreateMatchAnim(list< pair<int,int> >& members, Uint32 color){
     Animation newMatchAnim;
     newMatchAnim.matchAnim.numPieces=members.size();
     newMatchAnim.matchAnim.color=color;

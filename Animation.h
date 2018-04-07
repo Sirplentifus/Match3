@@ -4,11 +4,11 @@
 #include <SDL.h>
 #include <vector>
 
-typedef enum {RED, GREEN, BLUE, YELLOW, PURPLE, N_PIECES, EMPTY} piece_t;
+#include "Piece.h"
 
 struct DropAnim{
     public:
-        static constexpr float drop_speed = 5.0/1000.0; //tiles per millisecond
+        static const float drop_speed; //definition moved to .cpp due to compiler issues
 
         int i, start_j, target_j;
         piece_t piece_type;

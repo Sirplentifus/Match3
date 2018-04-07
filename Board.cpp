@@ -9,6 +9,14 @@ Board::Board()
     selectedPieceInd = -1, ontoPieceInd=-1;
     background=NULL;
     piece_mold=NULL;
+
+    tileMarginFraction=0.075;
+    tilePieceFraction=0.65;
+    pieceColors[RED] = 0xff4141f4;
+    pieceColors[GREEN] = 0xff41f446;
+    pieceColors[BLUE] = 0xfff48642;
+    pieceColors[YELLOW] = 0xff41eef4;
+    pieceColors[PURPLE] = 0xfff441c4;
 }
 
 Board::~Board()
@@ -31,7 +39,8 @@ void Board::setPosSize(int nX, int nY, int nW, int nH){
     //Although textures can be easily scaled, this feels more optimal - no waste in space nor lack of resolution
     //Also, this function isn't called often
 
-    SDL_DestroyTexture(piece_mold);
+    if(piece_mold != NULL)
+        SDL_DestroyTexture(piece_mold);
     piece_mold = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, tileSize, tileSize);
     SDL_SetTextureBlendMode( piece_mold, SDL_BLENDMODE_BLEND );
     SDL_SetRenderTarget(renderer, piece_mold);
@@ -39,8 +48,8 @@ void Board::setPosSize(int nX, int nY, int nW, int nH){
     SDL_RenderClear(renderer);
     aafilledCircleColor(renderer, tileSize/2, tileSize/2, pieceRadius, 0xffffffff);
 
-    SDL_DestroyTexture(background);
-    SDL_SetRenderTarget(renderer, background);
+    //SDL_DestroyTexture(background);
+    //SDL_SetRenderTarget(renderer, background);
 
     //Making the target back to the window
     SDL_SetRenderTarget(renderer, NULL);

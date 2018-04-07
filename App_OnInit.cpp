@@ -14,8 +14,10 @@ bool App::OnInit(){
 	//test
 	 SDL_DisplayMode displayMode;
 	 if( SDL_GetCurrentDisplayMode( 0, &displayMode ) == 0 ){
-        SDL_Log("Screen size: %d, %d", displayMode.w, displayMode.h);
-	 }
+         SDL_Log("Screen size: %d, %d", displayMode.w, displayMode.h);
+	 } else {
+         SDL_Log("Could not get current display mode! SDL_Error: %s\n", SDL_GetError());
+     }
 
 #ifdef __ANDROID__
     SDL_Log("I am an android program\n");
@@ -24,6 +26,8 @@ bool App::OnInit(){
 #endif
 #ifdef __GNUC__
     SDL_Log("I am a computer program\n");
+    screen_width = 480;
+    screen_height = 640;
 #endif // __GNUC__
 
 
@@ -43,16 +47,17 @@ bool App::OnInit(){
             return false;
     }*/
 
-    //Get window surface
-    screenSurface = SDL_GetWindowSurface( window );
-
     renderer = SDL_CreateRenderer( window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC );
+    if(renderer==NULL){
+        SDL_Log( "Renderer could not be created! SDL_Error: %s\n", SDL_GetError() );
+        return false;
+    }
+
+    //SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1");
+    //SDL_Log("SDL_HINT_RENDER_SCALE_QUALITY: %s\n", SDL_GetHint(SDL_HINT_RENDER_SCALE_QUALITY));
 
     board.OnInit(renderer, 8, 12);
     board.setPosSize(screen_margin, screen_margin, screen_width-2*screen_margin, screen_height-2*screen_margin);
-
-    SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "2");
-    SDL_Log("SDL_HINT_RENDER_SCALE_QUALITY: %s\n", SDL_GetHint(SDL_HINT_RENDER_SCALE_QUALITY));
 
     return true;
 }
